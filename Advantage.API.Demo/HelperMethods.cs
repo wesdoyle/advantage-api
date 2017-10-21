@@ -94,7 +94,7 @@ namespace Advantage.API.Demo
 
         public static Customer GetRandomCustomer(ApiContext ctx)
         {
-            var randomId = _rand.Next(ctx.Customers.Count());
+            var randomId = _rand.Next(1, ctx.Customers.Count());
             return ctx.Customers.First(c => c.Id == randomId);
         }
 
