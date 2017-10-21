@@ -23,7 +23,7 @@ namespace Advantage.API.Demo
 
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApiContext>(
-                    opt => opt.UseNpgsql(Configuration.GetConnectionString("AdvantageDb")));
+                    opt => opt.UseNpgsql(Configuration.GetConnectionString("AdvantageDemo")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
