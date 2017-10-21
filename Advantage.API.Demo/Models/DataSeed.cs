@@ -20,16 +20,19 @@ namespace Advantage.API.Demo
             if (!_ctx.Customers.Any())
             {
                 SeedCustomers(nCustomers);
+                _ctx.SaveChanges();
             }
 
             if (!_ctx.Orders.Any())
             {
                 SeedOrders(nOrders);
+                _ctx.SaveChanges();
             }
 
             if (!_ctx.Servers.Any())
             {
                 SeedServers();
+                _ctx.SaveChanges();
             }
         }
 
@@ -98,7 +101,7 @@ namespace Advantage.API.Demo
                     Customer = Helpers.GetRandomCustomer(_ctx),
                     OrderTotal = Helpers.GetRandomOrderTotal(),
                     Placed = placed,
-                    Completed = completed.Value
+                    Completed = completed
                 });
             }
 

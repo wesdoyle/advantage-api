@@ -11,15 +11,6 @@ namespace Advantage.API.Demo
         {
             var host = BuildWebHost(args);
 
-            var options = new DbContextOptions<ApiContext>();
-            var ctx = new ApiContext(options);
-            var seeder = new DataSeed(ctx);
-
-            var nCustomers = 20;
-            var nOrders = 1000;
-
-            seeder.SeedData(nCustomers, nOrders);
-
             host.Run();
         }
 
