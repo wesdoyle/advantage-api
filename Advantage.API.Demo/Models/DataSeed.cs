@@ -6,38 +6,68 @@ namespace Advantage.API.Demo
 {
     public class DataSeed
     {
-        internal static void SeedSampleCustomers(ApiContext ctx)
+        private static List<string> states = Helpers.states;
+
+        internal static void SeedCustomers(ApiContext ctx)
+        {
+            var customers = BuildCustomerList(20);
+
+            foreach(var customer in customers)
+            {
+                ctx.Customers.Add(customer);
+            }
+        }
+
+        internal static void SeedOrders(ApiContext ctx)
+        {
+            var orders = BuildOrderList(1000);
+
+            foreach(var order in orders)
+            {
+                ctx.Orders.Add(order);
+            }
+        }
+
+        internal static List<Customer> BuildCustomerList(int n)
         {
             var customers = new List<Customer>();
 
-            for (var i = 1; i <= 20; i++)
+            for (var i = 1; i <= n; i++)
             {
+                var name = Helpers.MakeCustomerName();
+
                 customers.Add(new Customer
                 {
                     Id = i,
-                    Name = GetRandom(),
-                    State = GetRandomItemFrom(states)
+                    Name = name,
+                    State = Helpers.GetRandom(states),
+                    Email = Helpers.MakeEmail(name)
                 });
             }
 
-            foreach (var customer in customers)
-            {
-                customer.Email = GenerateEmail(customer.Name);
-            }
+            return customers;
         }
-        internal static void SeedSampleOrders(ApiContext ctx)
+
+        internal static List<Order> BuildOrderList(int n)
         {
-            for (var i = 1; i <= 1000; i++)
+            var orders = new List<Order>();
+
+            for (var i = 1; i <= n; i++)
             {
-                ctx.Orders.Add(new Order
+                var placed = Helpers.GetRandOrderPlaced();
+                var completed = Helpers.GetRandOrderCompleted(placed);
+
+                orders.Add(new Order 
                 {
                     Id = i,
-                    Customer = GetRandomCustomer(),
-                    OrderTotal = _rand.Next(50, 1000),
-                    Placed = DateTime.Now.AddDays(_rand.Next(-100, 0))
+                    Customer = Helpers.GetRandomCustomer(),
+                    OrderTotal = Helpers.GetRandomOrderTotal(),
+                    Placed = placed,
+                    Completed = completed.Value
                 });
             }
-        }
 
+            return orders;
+        }
     }
 }
