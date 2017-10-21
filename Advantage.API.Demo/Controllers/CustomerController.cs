@@ -19,7 +19,7 @@ namespace Advantage.API.Demo.Controllers
         [HttpGet("{pageIndex:int}/{pageSize:int}")]
         public IActionResult Get(int pageIndex, int pageSize)
         {
-            var data = _ctx.Customers;
+            var data = _ctx.Customers.OrderBy(c => c.Id);
             var page = new PaginatedResponse<Customer>(data, pageIndex, pageSize);
 
             var totalCount = data.Count();
@@ -28,7 +28,6 @@ namespace Advantage.API.Demo.Controllers
             var response = new
             {
                 Page = page,
-                TotalCount = totalCount,
                 TotalPages = totalPages
             };
 
