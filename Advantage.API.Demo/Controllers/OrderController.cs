@@ -12,11 +12,6 @@ namespace Advantage.API.Demo.Controllers
         public OrderController(ApiContext ctx)
         {
             _ctx = ctx;
-
-            if (_ctx.Orders.Count() == 0)
-            {
-                //DataSeed.SeedSampleOrders(_ctx);
-            }
         }
     }
 }
