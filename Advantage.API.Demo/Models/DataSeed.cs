@@ -8,9 +8,9 @@ namespace Advantage.API.Demo
     {
         private static List<string> states = Helpers.states;
 
-        internal static void SeedCustomers(ApiContext ctx)
+        internal static void SeedCustomers(ApiContext ctx, int n)
         {
-            var customers = BuildCustomerList(20);
+            var customers = BuildCustomerList(n);
 
             foreach(var customer in customers)
             {
@@ -18,9 +18,9 @@ namespace Advantage.API.Demo
             }
         }
 
-        internal static void SeedOrders(ApiContext ctx)
+        internal static void SeedOrders(ApiContext ctx, int n)
         {
-            var orders = BuildOrderList(1000);
+            var orders = BuildOrderList(n);
 
             foreach(var order in orders)
             {

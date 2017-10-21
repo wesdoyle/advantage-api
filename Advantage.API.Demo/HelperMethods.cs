@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Advantage.API.Demo.Models;
+using System.Linq;
 
 namespace Advantage.API.Demo
 {
@@ -83,7 +84,7 @@ namespace Advantage.API.Demo
             var minLeadTime = TimeSpan.FromDays(7);
             var timePassed = now - placed;
 
-            if(timePassed < minLeadTime)
+            if (timePassed < minLeadTime)
             {
                 return null;
             }
@@ -91,14 +92,21 @@ namespace Advantage.API.Demo
             return placed.AddHours(_rand.Next(10, 90));
         }
 
-        internal static Customer GetRandomCustomer()
+        public static Customer GetRandomCustomer(ApiContext ctx)
         {
-            throw new NotImplementedException();
+            if (!ctx.Customers.Any())
+            {
+                DataSeed.SeedCustomers(ctx, 20);
+            }
+
+            var randomId = _rand.Next(ctx.Customers.Count());
+
+            return ctx.Customers.First(c => c.Id == randomId);
         }
 
-        internal static decimal GetRandomOrderTotal()
+        public static decimal GetRandomOrderTotal()
         {
-            throw new NotImplementedException();
+            return _rand.Next(25, 1000);
         }
     }
 }
