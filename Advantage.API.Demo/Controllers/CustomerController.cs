@@ -15,10 +15,11 @@ namespace Advantage.API.Demo.Controllers
         }
 
         // GET api/values
-        [HttpGet]
-        public IEnumerable<Customer> Get()
+        [HttpGet("{pageIndex:int}/{pageSize:int}")]
+        public PaginatedResponse<Customer> Get(int pageIndex, int pageSize)
         {
-            return _ctx.Customers;
+            var data = _ctx.Customers;
+            return new PaginatedResponse<Customer>(data, pageIndex, pageSize);
         }
 
         // GET api/values/5
