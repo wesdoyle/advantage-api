@@ -15,27 +15,28 @@ namespace Advantage.API.Demo.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public PaginatedResponse<Server> Get(int pageIndex, int pageSize)
         {
-            return new string[] { "value1", "value2" };
+            var data = _ctx.Servers;
+            return new PaginatedResponse<Server>(data, pageIndex, pageSize);
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id}", Name ="GetServer")]
+        public Server Get(int id)
         {
-            return "value";
+            return _ctx.Servers.Find(id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody] Server server)
         {
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] Server server)
         {
         }
 

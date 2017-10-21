@@ -17,27 +17,37 @@ namespace Advantage.API.Demo.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public PaginatedResponse<Order> Get(int pageIndex, int pageSize)
         {
-            return new string[] { "value1", "value2" };
+            var data = _ctx.Orders;
+            return new PaginatedResponse<Order>(data, pageIndex, pageSize);
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id}", Name ="GetOrder")]
+        public Order Get(int id)
         {
-            return "value";
+            return _ctx.Orders.Find(id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody] Order order)
         {
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            _ctx.Orders.Add(order);
+            _ctx.SaveChanges();
+
+            return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] Order order)
         {
         }
 
