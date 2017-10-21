@@ -39,7 +39,8 @@ namespace Advantage.API.Demo.Controllers
         [HttpGet("{id}", Name ="GetOrder")]
         public Order Get(int id)
         {
-            return _ctx.Orders.Include(o=>o.Customer).Find(id);
+            return _ctx.Orders.Include(o => o.Customer)
+                .First(o => o.Id == id);
         }
 
         // POST api/order
