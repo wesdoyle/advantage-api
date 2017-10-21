@@ -10,7 +10,6 @@ namespace Advantage.API.Demo
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
-
             host.Run();
         }
 
