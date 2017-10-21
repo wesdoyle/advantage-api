@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advantage.API.Demo", "Advantage.API.Demo\Advantage.API.Demo.csproj", "{922DF05C-2D83-4130-A55E-1C7E15831D70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{922DF05C-2D83-4130-A55E-1C7E15831D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{922DF05C-2D83-4130-A55E-1C7E15831D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{922DF05C-2D83-4130-A55E-1C7E15831D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{922DF05C-2D83-4130-A55E-1C7E15831D70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64612C89-3D6E-4D9E-BB98-3A9FB48609A5}
+	EndGlobalSection
+EndGlobal
