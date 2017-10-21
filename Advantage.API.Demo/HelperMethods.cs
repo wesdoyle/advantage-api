@@ -94,13 +94,7 @@ namespace Advantage.API.Demo
 
         public static Customer GetRandomCustomer(ApiContext ctx)
         {
-            if (!ctx.Customers.Any())
-            {
-                DataSeed.SeedCustomers(ctx, 20);
-            }
-
             var randomId = _rand.Next(ctx.Customers.Count());
-
             return ctx.Customers.First(c => c.Id == randomId);
         }
 

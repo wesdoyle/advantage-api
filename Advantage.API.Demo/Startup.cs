@@ -27,18 +27,12 @@ namespace Advantage.API.Demo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DataSeed seed)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // Seed data with number of customers and number of orders
-            var nCustomers = 20;
-            var nOrders = 1000;
-            seed.SeedData(nCustomers, nOrders);
-
             app.UseMvc();
         }
     }

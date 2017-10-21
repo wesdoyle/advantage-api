@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Advantage.API.Demo
 {
@@ -14,7 +9,18 @@ namespace Advantage.API.Demo
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            var options = new DbContextOptions<ApiContext>();
+            var ctx = new ApiContext(options);
+            var seeder = new DataSeed(ctx);
+
+            var nCustomers = 20;
+            var nOrders = 1000;
+
+            seeder.SeedData(nCustomers, nOrders);
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

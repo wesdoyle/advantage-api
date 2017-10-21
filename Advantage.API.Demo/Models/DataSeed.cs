@@ -6,7 +6,7 @@ namespace Advantage.API.Demo
 {
     public class DataSeed
     {
-        private static ApiContext _ctx;
+        private readonly ApiContext _ctx;
 
         public DataSeed(ApiContext ctx)
         {
@@ -19,47 +19,47 @@ namespace Advantage.API.Demo
         {
             if (!_ctx.Customers.Any())
             {
-                SeedCustomers(_ctx, nCustomers);
+                SeedCustomers(nCustomers);
             }
 
             if (!_ctx.Orders.Any())
             {
-                SeedOrders(_ctx, nOrders);
+                SeedOrders(nOrders);
             }
 
             if (!_ctx.Servers.Any())
             {
-                SeedServers(_ctx);
+                SeedServers();
             }
         }
 
-        internal static void SeedCustomers(ApiContext ctx, int n)
+        internal void SeedCustomers(int n)
         {
             var customers = BuildCustomerList(n);
 
             foreach (var customer in customers)
             {
-                ctx.Customers.Add(customer);
+                _ctx.Customers.Add(customer);
             }
         }
 
-        internal static void SeedOrders(ApiContext ctx, int n)
+        internal void SeedOrders(int n)
         {
             var orders = BuildOrderList(n);
 
             foreach (var order in orders)
             {
-                ctx.Orders.Add(order);
+                _ctx.Orders.Add(order);
             }
         }
 
-        internal static void SeedServers(ApiContext ctx)
+        internal void SeedServers()
         {
             var servers = BuildServerList();
 
             foreach (var server in servers)
             {
-                ctx.Servers.Add(server);
+                _ctx.Servers.Add(server);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Advantage.API.Demo
             return customers;
         }
 
-        internal static List<Order> BuildOrderList(int n)
+        internal List<Order> BuildOrderList(int n)
         {
             var orders = new List<Order>();
 
