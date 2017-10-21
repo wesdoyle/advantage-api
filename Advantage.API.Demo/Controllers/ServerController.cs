@@ -1,5 +1,7 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace Advantage.API.Demo.Controllers
 {
@@ -13,37 +15,82 @@ namespace Advantage.API.Demo.Controllers
             _ctx = ctx;
         }
 
-        // GET api/values
-        [HttpGet]
-        public PaginatedResponse<Server> Get(int pageIndex, int pageSize)
+        // GET api/server/pageNumber/pageSize
+        [HttpGet("{pageIndex:int}/{pageSize:int}")]
+        public IActionResult Get(int pageIndex, int pageSize)
         {
-            var data = _ctx.Servers;
-            return new PaginatedResponse<Server>(data, pageIndex, pageSize);
+            var data = _ctx.Servers.OrderBy(c => c.Id);
+            var page = new PaginatedResponse<Server>(data, pageIndex, pageSize);
+
+            var totalCount = data.Count();
+            var totalPages = Math.Ceiling((double)totalCount / pageSize);
+
+            var response = new
+            {
+                Page = page,
+                TotalPages = totalPages
+            };
+
+            return Ok(response);
         }
 
-        // GET api/values/5
+        // GET api/server/5
         [HttpGet("{id}", Name ="GetServer")]
         public Server Get(int id)
         {
             return _ctx.Servers.Find(id);
         }
 
-        // POST api/values
+        // POST api/server
         [HttpPost]
-        public void Post([FromBody] Server server)
+        public IActionResult Post([FromBody] Server server)
         {
+            if (server == null)
+            {
+                return BadRequest();
+            }
+
+            _ctx.Servers.Add(server);
+            _ctx.SaveChanges();
+
+            return CreatedAtRoute("GetServer", new { id = server.Id }, server);
         }
 
-        // PUT api/values/5
+        // PUT api/server/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Server server)
+        public IActionResult Put(int id, [FromBody] Server server)
         {
+            if (server == null || server.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var updatedServer = _ctx.Servers.FirstOrDefault(c => c.Id == id);
+
+            if (updatedServer == null)
+            {
+                return NotFound();
+            }
+
+            updatedServer.IsOnline = server.IsOnline;
+
+            _ctx.SaveChanges();
+            return new NoContentResult();
         }
 
-        // DELETE api/values/5
+        // DELETE api/server/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var server = _ctx.Servers.FirstOrDefault(t => t.Id == id);
+            if (server == null)
+            {
+                return NotFound();
+            }
+
+            _ctx.Servers.Remove(server);
+            _ctx.SaveChanges();
+            return new NoContentResult();
         }
     }
 }
