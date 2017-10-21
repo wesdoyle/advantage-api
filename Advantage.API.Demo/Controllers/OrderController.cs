@@ -1,5 +1,7 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace Advantage.API.Demo.Controllers
 {
@@ -13,22 +15,33 @@ namespace Advantage.API.Demo.Controllers
             _ctx = ctx;
         }
 
-        // GET api/values
-        [HttpGet]
-        public PaginatedResponse<Order> Get(int pageIndex, int pageSize)
+        // GET api/order/pageNumber/pageSize
+        [HttpGet("{pageIndex:int}/{pageSize:int}")]
+        public IActionResult Get(int pageIndex, int pageSize)
         {
-            var data = _ctx.Orders;
-            return new PaginatedResponse<Order>(data, pageIndex, pageSize);
+            var data = _ctx.Orders.OrderBy(c => c.Id);
+            var page = new PaginatedResponse<Order>(data, pageIndex, pageSize);
+
+            var totalCount = data.Count();
+            var totalPages = Math.Ceiling((double)totalCount / pageSize);
+
+            var response = new
+            {
+                Page = page,
+                TotalPages = totalPages
+            };
+
+            return Ok(response);
         }
 
-        // GET api/values/5
+        // GET api/order/5
         [HttpGet("{id}", Name ="GetOrder")]
         public Order Get(int id)
         {
             return _ctx.Orders.Find(id);
         }
 
-        // POST api/values
+        // POST api/order
         [HttpPost]
         public IActionResult Post([FromBody] Order order)
         {
@@ -43,16 +56,44 @@ namespace Advantage.API.Demo.Controllers
             return CreatedAtRoute("GetOrder", new { id = order.Id }, order);
         }
 
-        // PUT api/values/5
+        // PUT api/order/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Order order)
+        public IActionResult Put(int id, [FromBody] Order order)
         {
+            if (order == null || order.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var updatedOrder = _ctx.Orders.FirstOrDefault(c => c.Id == id);
+
+            if (updatedOrder == null)
+            {
+                return NotFound();
+            }
+
+            updatedOrder.Customer = order.Customer;
+            updatedOrder.Completed = order.Completed;
+            updatedOrder.OrderTotal = order.OrderTotal;
+            updatedOrder.Placed = order.Placed;
+
+            _ctx.SaveChanges();
+            return new NoContentResult();
         }
 
-        // DELETE api/values/5
+        // DELETE api/order/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var order = _ctx.Orders.FirstOrDefault(t => t.Id == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            _ctx.Orders.Remove(order);
+            _ctx.SaveChanges();
+            return new NoContentResult();
         }
     }
 }
