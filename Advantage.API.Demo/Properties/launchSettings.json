@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/customers/1/20",
+      "launchUrl": "api/customer/1/20",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +19,7 @@
     "Advantage.API.Demo": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/customers/1/20",
+      "launchUrl": "api/customer/1/20",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
