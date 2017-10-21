@@ -20,6 +20,7 @@ namespace Advantage.API.Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
 
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApiContext>(
@@ -34,6 +35,7 @@ namespace Advantage.API.Demo
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(b => b.WithOrigins("http://localhost:4200"));
             }
 
             var nCustomers = 20;
