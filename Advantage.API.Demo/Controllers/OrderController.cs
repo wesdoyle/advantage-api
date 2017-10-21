@@ -1,5 +1,6 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -19,7 +20,7 @@ namespace Advantage.API.Demo.Controllers
         [HttpGet("{pageIndex:int}/{pageSize:int}")]
         public IActionResult Get(int pageIndex, int pageSize)
         {
-            var data = _ctx.Orders.OrderBy(c => c.Id);
+            var data = _ctx.Orders.Include(o => o.Customer).OrderBy(c => c.Id);
             var page = new PaginatedResponse<Order>(data, pageIndex, pageSize);
 
             var totalCount = data.Count();
