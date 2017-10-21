@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Advantage.API.Demo.Controllers
 {
+    [Route("api/[controller]")]
     public class CustomerController : Controller
     {
         private readonly ApiContext _ctx;

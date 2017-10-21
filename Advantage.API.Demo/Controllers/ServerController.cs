@@ -1,9 +1,9 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Advantage.API.Demo.Controllers
 {
+    [Route("api/[controller]")]
     public class ServerController : Controller
     {
         private readonly ApiContext _ctx;
