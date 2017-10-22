@@ -1,6 +1,7 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Advantage.API.Demo.Controllers
@@ -15,22 +16,11 @@ namespace Advantage.API.Demo.Controllers
             _ctx = ctx;
         }
 
-        // GET api/server/pageNumber/pageSize
-        [HttpGet("{pageIndex:int}/{pageSize:int}")]
-        public IActionResult Get(int pageIndex, int pageSize)
+        // GET api/server
+        [HttpGet]
+        public IActionResult Get()
         {
-            var data = _ctx.Servers.OrderBy(c => c.Id);
-            var page = new PaginatedResponse<Server>(data, pageIndex, pageSize);
-
-            var totalCount = data.Count();
-            var totalPages = Math.Ceiling((double)totalCount / pageSize);
-
-            var response = new
-            {
-                Page = page,
-                TotalPages = totalPages
-            };
-
+            var response = _ctx.Servers.ToList(); 
             return Ok(response);
         }
 

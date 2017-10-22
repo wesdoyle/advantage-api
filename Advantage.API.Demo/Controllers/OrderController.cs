@@ -20,7 +20,7 @@ namespace Advantage.API.Demo.Controllers
         [HttpGet("{pageIndex:int}/{pageSize:int}")]
         public IActionResult Get(int pageIndex, int pageSize)
         {
-            var data = _ctx.Orders.Include(o => o.Customer).OrderBy(c => c.Id);
+            var data = _ctx.Orders.Include(o => o.Customer).OrderByDescending(c => c.Placed);
             var page = new PaginatedResponse<Order>(data, pageIndex, pageSize);
 
             var totalCount = data.Count();
