@@ -1,7 +1,5 @@
 ﻿using Advantage.API.Demo.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Advantage.API.Demo.Controllers
@@ -44,6 +42,36 @@ namespace Advantage.API.Demo.Controllers
             _ctx.SaveChanges();
 
             return CreatedAtRoute("GetServer", new { id = server.Id }, server);
+        }
+
+        [HttpPatch("message")]
+        public IActionResult Message([FromBody] ServerMessage msg)
+        {
+            if (msg == null)
+            {
+                return BadRequest();
+            }
+
+            var server = _ctx.Servers.FirstOrDefault(s => s.Id == msg.Id);
+
+            if (server == null)
+            {
+                return NotFound();
+            }
+
+            if(msg.Payload == "activate")
+            {
+                server.IsOnline = true;
+                _ctx.SaveChanges();
+            }
+
+            if(msg.Payload == "deactivate")
+            {
+                server.IsOnline = false;
+                _ctx.SaveChanges();
+            }
+
+            return new NoContentResult();
         }
 
         // PUT api/server/5
