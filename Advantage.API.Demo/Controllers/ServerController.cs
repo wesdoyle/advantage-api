@@ -19,7 +19,7 @@ namespace Advantage.API.Demo.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var response = _ctx.Servers.ToList(); 
+            var response = _ctx.Servers.OrderBy(s=>s.Id).ToList(); 
             return Ok(response);
         }
 
