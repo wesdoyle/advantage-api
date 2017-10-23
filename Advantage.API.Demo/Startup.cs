@@ -52,7 +52,9 @@ namespace Advantage.API.Demo
             var nOrders = 1000;
             seeder.SeedData(nCustomers, nOrders);
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+                routes.MapRoute("default", "api/{controller}/{action}/{id?}")
+            );
         }
     }
 }
