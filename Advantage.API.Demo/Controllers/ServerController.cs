@@ -1,4 +1,5 @@
 ﻿using Advantage.API.Demo.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -44,21 +45,18 @@ namespace Advantage.API.Demo.Controllers
             return CreatedAtRoute("GetServer", new { id = server.Id }, server);
         }
 
-        [HttpPatch("message")]
-        public IActionResult Message([FromBody] ServerMessage msg)
+        [HttpPut("{id}")]
+        public IActionResult Message(int id, [FromBody] ServerMessage msg)
         {
-            if (msg == null)
-            {
-                return BadRequest();
-            }
 
-            var server = _ctx.Servers.FirstOrDefault(s => s.Id == msg.Id);
+            var server = _ctx.Servers.FirstOrDefault(s => s.Id == id);
 
             if (server == null)
             {
                 return NotFound();
             }
 
+            // move update handling to a service, perhaps
             if(msg.Payload == "activate")
             {
                 server.IsOnline = true;
@@ -71,28 +69,6 @@ namespace Advantage.API.Demo.Controllers
                 _ctx.SaveChanges();
             }
 
-            return new NoContentResult();
-        }
-
-        // PUT api/server/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Server server)
-        {
-            if (server == null || server.Id != id)
-            {
-                return BadRequest();
-            }
-
-            var updatedServer = _ctx.Servers.FirstOrDefault(c => c.Id == id);
-
-            if (updatedServer == null)
-            {
-                return NotFound();
-            }
-
-            updatedServer.IsOnline = server.IsOnline;
-
-            _ctx.SaveChanges();
             return new NoContentResult();
         }
 

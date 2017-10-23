@@ -19,8 +19,17 @@ namespace Advantage.API.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt =>
+                {
+                    opt.AddPolicy("CorsPolicy",
+                        b => b.AllowAnyOrigin()
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials());
+                }
+            );
+
             services.AddMvc();
-            services.AddCors();
 
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApiContext>(
@@ -35,8 +44,9 @@ namespace Advantage.API.Demo
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors(b => b.WithOrigins("http://localhost:4200"));
             }
+
+            app.UseCors("CorsPolicy");
 
             var nCustomers = 20;
             var nOrders = 1000;
