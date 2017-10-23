@@ -55,6 +55,28 @@ namespace Advantage.API.Demo.Controllers
             return Ok(groupedResult);
         }
 
+        [HttpGet("bycustomer/{n}")]
+        public IActionResult ByCustomer(int n)
+        {
+            // enumerated group due to ef error
+            // https://github.com/aspnet/EntityFrameworkCore/issues/9551
+
+            var orders = _ctx.Orders.Include(o => o.Customer).ToList();
+            var groupedResult = orders
+                .GroupBy(r => r.Customer.Id)
+                .ToList()
+                .Select(grp => new
+                {
+                    Id = grp.Key,
+                    Name = _ctx.Customers.Find(grp.Key).Name,
+                    Total = grp.Sum(x => x.OrderTotal)
+                }).OrderByDescending(r => r.Total)
+                .Take(n)
+                .ToList();
+
+            return Ok(groupedResult);
+        }
+
         // GET api/order/5
         [HttpGet("getorder/{id}", Name ="GetOrder")]
         public Order GetOrder(int id)
