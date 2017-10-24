@@ -67,7 +67,6 @@ namespace Advantage.API.Demo.Controllers
                 .ToList()
                 .Select(grp => new
                 {
-                    Id = grp.Key,
                     Name = _ctx.Customers.Find(grp.Key).Name,
                     Total = grp.Sum(x => x.OrderTotal)
                 }).OrderByDescending(r => r.Total)
